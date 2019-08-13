@@ -13,6 +13,15 @@ shxu_activityDT <- data.table::fread(input = "data/activity.csv")
 shxu_Total_Steps <- shxu_activityDT[, c(lapply(.SD, sum, na.rm = TRUE)), .SDcols = c("steps"), by = .(date)]
 head(shxu_Total_Steps)
 
+##         date steps
+##1: 2012-10-01     0
+##2: 2012-10-02   126
+##3: 2012-10-03 11352
+##4: 2012-10-04 12116
+##5: 2012-10-05 13294
+##6: 2012-10-06 15420
+
+
 ###2. If you do not understand the difference between a histogram and a barplot, research the difference between them.### 
 ###3. Make a histogram of the total number of steps taken each day###
 library(ggplot2)
@@ -21,6 +30,7 @@ ggplot(shxu_Total_Steps, aes(x = steps)) +
     geom_histogram(fill = "blue", binwidth = 1000) +
     labs(title = "Daily Steps", x = "Steps", y = "Frequency")
 dev.off()
+
 
 ###3. Calculate and report the mean and median of the total number of steps taken per day###
 shxu_Total_Steps[, .(Mean_Steps = mean(steps), Median_Steps = median(steps))]
@@ -62,3 +72,4 @@ shxu_activityDT[is.na(steps), "steps"] <- shxu_activityDT[, c(lapply(.SD, median
 shxu_IntervalDT <- shxu_activityDT[, c(lapply(.SD, mean, na.rm = TRUE)), .SDcols = c("steps"), by = .(interval, `weekday or weekend`)] 
 
 ggplot(shxu_IntervalDT , aes(x = interval , y = steps, color=`weekday or weekend`)) + geom_line() + labs(title = "Avg. Daily Steps by Weektype", x = "Interval", y = "No. of Steps") + facet_wrap(~`weekday or weekend` , ncol = 1, nrow=2)
+
